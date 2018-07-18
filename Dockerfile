@@ -4,7 +4,6 @@ MAINTAINER  Justin Wood <jwood@me.com>
 WORKDIR     /go/src/github.com/adnanh/webhook
 ENV         WEBHOOK_VERSION 2.6.8
 RUN         apk add --update -t build-deps curl libc-dev gcc libgcc openssh sshpass
-RUN         apk add --no-cache openssh sshpass
 RUN         curl -L --silent -o webhook.tar.gz https://github.com/adnanh/webhook/archive/${WEBHOOK_VERSION}.tar.gz && \
             tar -xzf webhook.tar.gz --strip 1 &&  \
             go get -d && \
@@ -16,4 +15,5 @@ RUN         curl -L --silent -o webhook.tar.gz https://github.com/adnanh/webhook
 FROM        alpine:3.7
 COPY        --from=build /usr/local/bin/webhook /usr/local/bin/webhook
 EXPOSE      9000
+RUN         apk add --no-cache openssh sshpass
 ENTRYPOINT  ["/usr/local/bin/webhook"]
